@@ -43,8 +43,11 @@ Each entry in the tree should include the following entries:
 - `Py` : y-momentum \[GeV\]
 - `Pz` : z-momentum \[GeV\]
 - `E` : energy \[GeV\]
+
 Note that the mass will be set automatically using energy conservation, and the charge will also be set automatically based on the PID.
-:red_circle: The first three entries (`iPos`$\in[1,2,3,4]) of each event should be the incoming electron, the target proton, the virtual photon, and the outgoing electron.
+
+:red_circle: The first three entries (`iPos`$\in[1,2,3,4]$) of each event should be the incoming electron, the target proton, the virtual photon, and the outgoing electron.
+
 The Lund particle status of the first three will be set to `21` so that they are not considered by gemc, while the remaining particles, including the scattered electron, will be assumed to all be final state particles.  Hence, their Lund particle status will be set to `1`.
 
 To download the ROOT files containing the String Spinner events, run:
