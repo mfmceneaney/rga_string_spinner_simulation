@@ -5,7 +5,7 @@ cd $SSS_HOME/jobs/simulation/mc_rga
 
 # Loop files
 i=1
-for file in $SSS_ROOT_FILES_DIR/*.root;
+while [ $i -le $SSS_NFILES ];
 do
 echo "$i > $PWD/submit$i.sh"
 echo
@@ -16,7 +16,6 @@ cp submit.sh submit$i.sh
 
 # Replace variables
 sed -i "s;MCINDEX=0;MCINDEX=$i;g" job$i.sh
-sed -i "s;INFILE=\"\$SSS_ROOT_FILES/tree\.root\";INFILE=$file;g" job$i.sh
 sed -i "s;job.sh;job$i.sh;g" submit$i.sh
 
 # Submit job

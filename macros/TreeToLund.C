@@ -246,6 +246,8 @@ void writeLundEvent(std::ofstream &out,
 void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12-posHelicity.root",
                 const char* treename = "tree",
                 const char* outname = "output.lund",
+                int MCIndex = 0, // not used
+                int maxEvents = 10000, // not used
                 int nTargetNucleons = 1, // assuming hydrogen target
                 int nTargetProtons = 1,  // assuming hydrogen target
                 float targetPol = 0,       // unpolarized target
@@ -299,6 +301,7 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
     std::map<int, std::tuple<int, int, int, int, double, double, double, double>> particleMap;
 
     // Loop TTree
+    int eventCounter = 0;
     int pcounter = 0;
     for (Long64_t i = 0; i < nentries; ++i) {
         tree->GetEntry(i);
@@ -306,33 +309,50 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
         // Assume events are grouped by iEvent in the TTree
         if (iEvent != currentEvent && currentEvent != -1) {
 
-            // Write previous event
-            writeLundEvent(
-                out,
-                particleMap,
-                nTargetNucleons, // nTargetNucleons
-                nTargetProtons, // nTargetProtons
-                targetPol, // targetPol (unpolarized)
-                beamPol, // beamPol (positive helicity)
-                beamPid, // beamPid (electron)
-                beamEnergy, // beamEnergy (GeV)
-                targetPid, // targetPid (proton)
-                processId, // processId (DIS)
-                0.0, // integratedXS
-                "\t", // delimiter
-                5 // precision
-            );
+            eventCounter++;
 
-            // Clear for next event
-            particleMap.clear();
-            pcounter = 0;
+            // Check if minimum event number has been reached
+            if (eventCounter > maxEvents*MCIndex) {
+
+                // Write previous event
+                writeLundEvent(
+                    out,
+                    particleMap,
+                    nTargetNucleons, // nTargetNucleons
+                    nTargetProtons, // nTargetProtons
+                    targetPol, // targetPol (unpolarized)
+                    beamPol, // beamPol (positive helicity)
+                    beamPid, // beamPid (electron)
+                    beamEnergy, // beamEnergy (GeV)
+                    targetPid, // targetPid (proton)
+                    processId, // processId (DIS)
+                    0.0, // integratedXS
+                    "\t", // delimiter
+                    5 // precision
+                );
+
+                // Clear for next event
+                particleMap.clear();
+                pcounter = 0;
+
+            }
+            
         }
 
         // Set event number
         currentEvent = iEvent;
 
-        // Store particle data by iPos (particle index: 1, 2, 5, ...)
-        particleMap[pcounter++] = std::make_tuple(status, pid, mother, daughter, px, py, pz, E);
+        // Check if minimum index has been reached
+        if (eventCounter >= maxEvents*MCIndex) {
+
+            // Store particle data by iPos (particle index: 1, 2, 5, ...)
+            particleMap[pcounter++] = std::make_tuple(status, pid, mother, daughter, px, py, pz, E);
+
+        // Break if maximum number of events for this MCIndex has been reached   
+        } else if (eventCounter >= maxEvents*(MCIndex+1)) {
+            
+            break;
+        }
     }
 
     // Write last event

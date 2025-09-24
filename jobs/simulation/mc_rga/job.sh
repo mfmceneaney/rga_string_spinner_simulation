@@ -6,12 +6,12 @@
 
 # Set job info
 export MCINDEX=0 #NOTE: This will be set by `setup.sh`.
-export INFILE="$SSS_ROOT_FILES/tree.root" #NOTE: This will be set by `setup.sh`.
+export INFILE=$SSS_ROOT_FILE
 export TREE=$SSS_TREE
 export ROOT_SCRIPT="$SSS_HOME/macros/TreeToLund.C"
 export PREFIX="out_"
 export BASENAME="${PREFIX}${MCINDEX}"
-export NEVENTS=$SSS_NEVENTS
+export NEVENTS=$SSS_NMAX
 export GCARD=$SSS_GCARD_RGA_GEMC
 export YAML=$SSS_YAML_RGA_COAT
 export OUTDIR="$RGA_SS_VOL_DIR/jobs/simulation/mc_rga/"
@@ -55,6 +55,7 @@ mkdir -p $OUTDIR_LUND
 cd $OUTDIR_LUND
 export LUNDFILE=$OUTDIR_LUND/${BASENAME}.lund
 export ROOT_COMMAND="${ROOT_SCRIPT}(\"${INFILE}\",\"${TREE}\",\"${LUNDFILE}\", \
+$MCINDEX, $NEVENTS, \
 $nTargetNucleons, $nTargetProtons, $targetPol, $beamPol, $beamPid, $beamEnergy, $targetPid, $processId)"
 root -l -b -q $ROOT_COMMAND
 export LUND_TASK_STATUS=$?
