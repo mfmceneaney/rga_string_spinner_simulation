@@ -28,6 +28,14 @@ source bin/env.sh
 popd >> /dev/null
 ```
 
+To run the python download scripts you will also need to create a virtual environment and install the dependencies.
+```bash
+python3 -m venv /path/to/new/venv
+source /path/to/new/venv/bin/activate
+pip install -r $SSS_HOME/requirements.txt
+/path/to/new/venv/bin/playwright install
+```
+
 # Overview
 
 First, you must produce simulation HIPO files.
@@ -50,10 +58,16 @@ Note that the mass will be set automatically using energy conservation, and the 
 
 The Lund particle status of the first three will be set to `21` so that they are not considered by gemc, while the remaining particles, including the scattered electron, will be assumed to all be final state particles.  Hence, their Lund particle status will be set to `1`.
 
-To download the ROOT files containing the String Spinner events, run:
+To download individual ROOT files containing the String Spinner events, run:
 ```bash
 $SSS_HOME/bin/download_root_file.sh <DONWLOAD_URL> <FILENAME>
 ```
+
+To download a set of ROOT files from a regular expression and cernbox url use the python script instead, assuming your python virtual environment is active.  To see the usage, run:
+```bash
+python3 $SSS_HOME/py/cernbox_downloader.py --help
+```
+
 Put all the downloaded files in a convenient directory, e.g., `$SSS_VOL_DIR/root_files/mc_rga`, and make `$SSS_ROOT_FILES_DIR` point to this in the environment script.
 
 Then, run the simulation jobs.
