@@ -281,8 +281,8 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
     tree->SetBranchAddress("iPos", &iPos);
     tree->SetBranchAddress("status", &status);
     tree->SetBranchAddress("id", &pid);
-    tree->SetBranchAddress("mother", &mother);
-    tree->SetBranchAddress("daughter", &daughter);
+    tree->SetBranchAddress("iMother1", &mother);
+    tree->SetBranchAddress("iDaughter1", &daughter);
     tree->SetBranchAddress("Px", &px);
     tree->SetBranchAddress("Py", &py);
     tree->SetBranchAddress("Pz", &pz);
