@@ -8,8 +8,8 @@ setenv SSS_VOL_DIR "/volatile/clas12/users/$USER/rga_string_spinner_simulation" 
 setenv SSS_C12_CONFIG_HOME "/work/clas12/users/$USER/clas12-config" #NOTE: CHANGE AS NEEDED. This is a path to your local repo of: https://github.com/mfmceneaney/rgh_simulation for gcard and service yaml files for `gemc` and `recon-util`.
 
 # Set gcard and yaml files for simulation
-setenv SSS_GCARD_RGA_GEMC "$C12_CONFIG_HOME/gemc/5.10/rga_fall2018.gcard" #NOTE: CHANGE AS NEEDED.
-setenv SSS_YAML_RGA_COAT "$C12_CONFIG_HOME/coatjava/11.1.0/rga_fall2018.yaml" #NOTE: CHANGE AS NEEDED.
+setenv SSS_GCARD_RGA_GEMC "$SSS_C12_CONFIG_HOME/gemc/5.10/rga_fall2018.gcard" #NOTE: CHANGE AS NEEDED.
+setenv SSS_YAML_RGA_COAT "$SSS_C12_CONFIG_HOME/coatjava/11.1.0/rga_fall2018.yaml" #NOTE: CHANGE AS NEEDED.
 
 # Set variables for string spinner simulation
 setenv SSS_ROOT_FILES_DIR "$SSS_VOL_DIR/root_files/mc_rga" #NOTE: CHANGE AS NEEDED.

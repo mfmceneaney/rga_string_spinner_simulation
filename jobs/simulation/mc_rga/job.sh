@@ -14,7 +14,7 @@ export BASENAME="${PREFIX}${MCINDEX}"
 export NEVENTS=$SSS_NMAX
 export GCARD=$SSS_GCARD_RGA_GEMC
 export YAML=$SSS_YAML_RGA_COAT
-export OUTDIR="$RGA_SS_VOL_DIR/jobs/simulation/mc_rga/"
+export OUTDIR="$SSS_VOL_DIR/jobs/simulation/mc_rga/"
 
 # Set parameters for TreeToLund macro
 export nTargetNucleons=1
