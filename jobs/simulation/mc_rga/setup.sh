@@ -3,22 +3,31 @@
 # Got to job directory
 cd $SSS_HOME/jobs/simulation/mc_rga
 
-# Loop files
+# Loop root files
+j=0
+for file in $SSS_ROOT_FILES_DIR/*.root;
+do
+offset=$(($SSS_NFILES * $j))
+# Loop number of lund files
 i=1
 while [ $i -le $SSS_NFILES ];
 do
-echo "$i > $PWD/submit$i.sh"
+idx=$(($offset + $i))
+echo "$idx > $PWD/submit$idx.sh"
 echo
 
 # Copy scripts
-cp job.sh job$i.sh
-cp submit.sh submit$i.sh
+cp job.sh job$idx.sh
+cp submit.sh submit$idx.sh
 
 # Replace variables
-sed -i "s;MCINDEX=0;MCINDEX=$i;g" job$i.sh
-sed -i "s;job.sh;job$i.sh;g" submit$i.sh
+sed -i "s;INFILE=\"file.root\";INFILE=$file;g" job$idx.sh
+sed -i "s;MCINDEX=0;MCINDEX=$idx;g" job$idx.sh
+sed -i "s;job.sh;job$idx.sh;g" submit$idx.sh
 
 # Submit job
-sbatch submit$i.sh
+sbatch submit$idx.sh
 ((i++))
+done
+((j++))
 done
