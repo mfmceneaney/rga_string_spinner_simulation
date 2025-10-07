@@ -213,14 +213,14 @@ void writeLundEvent(std::ofstream &out,
     double px_e_0 = std::get<4>(tup_e_0);
     double py_e_0 = std::get<5>(tup_e_0);
     double pz_e_0 = std::get<6>(tup_e_0);
-    double E_E_0  = std::get<7>(tup_e_0);
+    double E_e_0  = std::get<7>(tup_e_0);
 
     // Grab outgoing electron
     auto &tup_e_3 = particleMap[3];
     double px_e_3 = std::get<4>(tup_e_3);
     double py_e_3 = std::get<5>(tup_e_3);
     double pz_e_3 = std::get<6>(tup_e_3);
-    double E_E_3  = std::get<7>(tup_e_3);
+    double E_e_3  = std::get<7>(tup_e_3);
 
     // Set virtual photon with momentum and energy conservation
     int status_ph    = 21;
