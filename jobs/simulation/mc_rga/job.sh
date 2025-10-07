@@ -6,7 +6,7 @@
 
 # Set job info
 export MCINDEX=0 #NOTE: This will be set by `setup.sh`.
-export INFILE=$SSS_ROOT_FILE
+export INFILE="file.root"
 export TREE=$SSS_TREE
 export ROOT_SCRIPT="$SSS_HOME/macros/TreeToLund.C"
 export PREFIX="out_"
@@ -57,7 +57,7 @@ export LUNDFILE=$OUTDIR_LUND/${BASENAME}.lund
 export ROOT_COMMAND="${ROOT_SCRIPT}(\"${INFILE}\",\"${TREE}\",\"${LUNDFILE}\", \
 $MCINDEX, $NEVENTS, \
 $nTargetNucleons, $nTargetProtons, $targetPol, $beamPol, $beamPid, $beamEnergy, $targetPid, $processId)"
-root -l -b -q $ROOT_COMMAND
+root -l -b -q "$ROOT_COMMAND"
 export LUND_TASK_STATUS=$?
 cd - #NOTE: cd back to wherever you were before
 check_task_status "$ROOT_SCRIPT" $LUNDFILE $LUND_TASK_STATUS 1
