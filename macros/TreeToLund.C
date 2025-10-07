@@ -192,7 +192,7 @@ void writeLundEvent(std::ofstream &out,
                 ) {
 
     // Get number of particles
-    int nparticles = particleMap.size();
+    int nparticles = particleMap.size()+1;
 
     // Write event header
     // nparticles, nTargetNucleons(PARL1), nTargetProtons(PARL2),
