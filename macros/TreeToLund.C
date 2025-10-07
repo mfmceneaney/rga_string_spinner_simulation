@@ -206,16 +206,49 @@ void writeLundEvent(std::ofstream &out,
         << targetPid << delimiter.c_str() << processId << delimiter.c_str()
         << integratedXS << std::endl;
 
+    //----- Manually insert virtual photon from incoming and scattered electrons -----//
+
+    // Grab incoming electron
+    auto &tup_e_0 = particleMap[0];
+    double px_e_0 = std::get<4>(tup_e_0);
+    double py_e_0 = std::get<5>(tup_e_0);
+    double pz_e_0 = std::get<6>(tup_e_0);
+    double E_E_0  = std::get<7>(tup_e_0);
+
+    // Grab outgoing electron
+    auto &tup_e_3 = particleMap[3];
+    double px_e_3 = std::get<4>(tup_e_3);
+    double py_e_3 = std::get<5>(tup_e_3);
+    double pz_e_3 = std::get<6>(tup_e_3);
+    double E_E_3  = std::get<7>(tup_e_3);
+
+    // Set virtual photon with momentum and energy conservation
+    int status_ph    = 21;
+    int pid_ph       = 22;
+    int mother_ph    = 1;
+    int daughter_ph  = 4;
+    double px_ph     = px_e_0-px_e_3;
+    double py_ph     = py_e_0-py_e_3;
+    double pz_ph     = pz_e_0-pz_e_3;
+    double E_ph      = E_e_0-E_e_3;
+
+    particleMap[2] = std::make_tuple(status_ph, pid_ph, mother_ph, daughter_ph, px_ph, py_ph, pz_ph, E_ph);
+
     // Loop over particles
     for (int j = 0; j < nparticles; ++j) {
 
         // Set particle data
         auto& tup = particleMap[j];
-        int status = (j>2) ? 1 : 21; //std::get<0>(tup);
-        //NOTE: ASSUME ALL FINAL STATE PARTICLES EXCEPT FIRST ENTRIES INITIAL ELECTRON, TARGET PROTON, VIRTUAL PHOTON.
+        // //NOTE: ASSUME FIRST ENTRIES ARE:
+        // - INITIAL ELECTRON, 
+        // - TARGET PROTON,
+        // - VIRTUAL PHOTON, 
+        // - SCATTERED ELECTRON, 
+        // - REMAINING PARTICLES...
         int pid = std::get<1>(tup);
         int mother = std::get<2>(tup);
         int daughter = std::get<3>(tup);
+        int status = (daughter>0) ? 1 : 21; //NOTE: Final state particles have no daughters.
         double px = std::get<4>(tup);
         double py = std::get<5>(tup);
         double pz = std::get<6>(tup);
@@ -344,6 +377,11 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
 
         // Check if minimum index has been reached
         if (eventCounter >= maxEvents*MCIndex) {
+
+            // Manually skip virtual photon index since not present in trees
+            if (pcounter==2) {
+                pcounter++;
+            }
 
             // Store particle data by iPos (particle index: 1, 2, 5, ...)
             particleMap[pcounter++] = std::make_tuple(status, pid, mother, daughter, px, py, pz, E);
