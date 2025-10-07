@@ -8,6 +8,6 @@
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=2000
 #SBATCH --gres=disk:5000
-#SBATCH --time=48:00:00
+#SBATCH --time=24:00:00
 
 $SSS_HOME/jobs/simulation/mc_rga/job.sh
