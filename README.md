@@ -45,8 +45,8 @@ Each entry in the tree should include the following entries:
 - `iPos` : event position index : \[1,inf\]
 - `status` : Lund particle status
 - `id` : Lund particle PID
-- `mother` : mother particle Lund index : \[1,inf\]
-- `daughter` : first daughter particle Lund index : \[1,inf\]
+- `iMother1` : mother particle Lund index : \[1,inf\]
+- `iDaughter1` : first daughter particle Lund index : \[1,inf\]
 - `Px` : x-momentum \[GeV\]
 - `Py` : y-momentum \[GeV\]
 - `Pz` : z-momentum \[GeV\]
@@ -54,9 +54,9 @@ Each entry in the tree should include the following entries:
 
 Note that the mass will be set automatically using energy conservation, and the charge will also be set automatically based on the PID.
 
-:red_circle: The first three entries (`iPos`$\in[1,2,3,4]$) of each event should be the incoming electron, the target proton, the virtual photon, and the outgoing electron.
+:red_circle: The first three entries (`iPos`$\in[1,2,3]$) of each event should be the incoming electron, the target proton, and the outgoing electron.  The virtual photon will be inferred from the incoming and outgoing electrons using momentum and energy conservation and inserted at index `iPos`$=3$.
 
-The Lund particle status of the first three will be set to `21` so that they are not considered by gemc, while the remaining particles, including the scattered electron, will be assumed to all be final state particles.  Hence, their Lund particle status will be set to `1`.
+The Lund particle status of the first three particles as well as any particle with a non-zero daughter index will be set to `21` so that they are not considered by gemc, while the remaining particles, including the scattered electron, will be assumed to all be final state particles.  Hence, their Lund particle status will be set to `1`.
 
 To download individual ROOT files containing the String Spinner events, run:
 ```bash
