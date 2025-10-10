@@ -9,7 +9,7 @@ for file in $SSS_ROOT_FILES_DIR/*.root;
 do
 offset=$(($SSS_NFILES * $j))
 # Loop number of lund files
-i=1
+i=0
 while [ $i -le $SSS_NFILES ];
 do
 idx=$(($offset + $i))
