@@ -576,8 +576,8 @@ void writeLundEvent(std::ofstream &out,
 void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12-posHelicity.root",
                 const char* treename = "tree",
                 const char* outname = "output.lund",
-                int MCIndex = 0, // not used
-                int maxEvents = 10000, // not used
+                int batch_idx = 1, // batch index in [1,nbatches]
+                int batch_size = 10000, // batch size
                 int nTargetNucleons = 1, // assuming hydrogen target
                 int nTargetProtons = 1,  // assuming hydrogen target
                 float targetPol = 0,       // unpolarized target
@@ -631,7 +631,7 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
     std::map<int, std::tuple<int, int, int, int, double, double, double, double>> particleMap;
 
     // Loop TTree
-    cout << "Processing entries min , max: " << MCIndex*maxEvents << " , " << (MCIndex+1)*maxEvents << endl;
+    cout << "Processing entries min , max: " << (batch_idx-1)*batch_size << " , " << batch_idx*batch_size << endl;
     int eventCounter = 0;
     int pcounter = 0;
     for (Long64_t i = 0; i < nentries; ++i) {
@@ -643,7 +643,7 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
             eventCounter++;
 
             // Check if minimum event number has been reached
-            if (eventCounter > maxEvents*MCIndex) {
+            if (eventCounter > (batch_idx-1)*batch_size) {
 
                 // Write previous event
                 writeLundEvent(
@@ -672,7 +672,7 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
         currentEvent = iEvent;
 
         // Check if minimum index has been reached
-        if (eventCounter >= maxEvents*MCIndex) {
+        if (eventCounter >= batch_idx*(batch_size-1)) {
 
             // Skip initial LUND string entry
             if (pcounter==0 && pid!=beamPid) {
@@ -683,10 +683,10 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
             // Store particle data by particle counter [0:nParticles-1]
             particleMap[pcounter++] = std::make_tuple(status, pid, mother, daughter, px, py, pz, E);
 
-        // Break if maximum number of events for this MCIndex has been reached   
+        // Break if maximum number of events for this batch_idx has been reached   
         }
         
-        if (eventCounter >= maxEvents*(MCIndex+1)) {
+        if (eventCounter >= batch_idx*batch_size) {
 
             break;
         }
