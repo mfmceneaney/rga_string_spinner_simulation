@@ -1,0 +1,4 @@
+jobs/*/*/submit?*.sh
+jobs/*/*/job?*.sh
+jobs/*/*/*.txt
+jobs/*/*/*~
