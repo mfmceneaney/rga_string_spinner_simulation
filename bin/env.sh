@@ -19,7 +19,7 @@ export SSS_NMAX=10000 # Maximum number of events allowed in each output lund fil
 export SSS_NFILES=$(( ($SSS_NEVENTS + $SSS_NMAX - 1) / $SSS_NMAX )) # Calculate number of files needed
 
 # Set beam energies and target lund pids for CLAS12-Analysis #NOTE: CHANGE AS NEEDED
-export SSS_BEAM_ENERGY_RGA=10.6 #NOTE: CHANGE AS NEEDED.
+export SSS_BEAM_ENERGY_RGA=12.0 #NOTE: CHANGE AS NEEDED.
 export SSS_TPID_RGA=2212 #NOTE: CHANGE AS NEEDED.
 
 # Set project HIPO data paths for CLAS12-Analysis #NOTE: CHANGE AS NEEDED
