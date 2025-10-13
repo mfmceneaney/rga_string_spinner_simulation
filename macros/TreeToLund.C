@@ -672,7 +672,7 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
         currentEvent = iEvent;
 
         // Check if minimum index has been reached
-        if (eventCounter >= batch_idx*(batch_size-1)) {
+        if (eventCounter >= (batch_idx-1)*batch_size) {
 
             // Skip initial LUND string entry
             if (pcounter==0 && pid!=beamPid) {
