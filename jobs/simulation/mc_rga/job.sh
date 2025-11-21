@@ -57,7 +57,7 @@ export LUNDFILE=$OUTDIR_LUND/${BASENAME}.lund
 export ROOT_COMMAND="${ROOT_SCRIPT}(\"${INFILE}\",\"${TREE}\",\"${LUNDFILE}\", \
 $MCINDEX, $NEVENTS, \
 $nTargetNucleons, $nTargetProtons, $targetPol, $beamPol, $beamPid, $beamEnergy, $targetPid, $processId)"
-root -l -b -q "$ROOT_COMMAND"
+SSS_SAGA_COMMAND "root -l -b -q \"$ROOT_COMMAND\""
 export LUND_TASK_STATUS=$?
 cd - #NOTE: cd back to wherever you were before
 check_task_status "$ROOT_SCRIPT" $LUNDFILE $LUND_TASK_STATUS 1
@@ -66,7 +66,8 @@ check_task_status "$ROOT_SCRIPT" $LUNDFILE $LUND_TASK_STATUS 1
 export OUTDIR_GEMC="${OUTDIR}/gemc"
 mkdir -p $OUTDIR_GEMC
 export GEMCFILE=$OUTDIR_GEMC/$BASENAME.hipo
-gemc $GCARD -SAVE_ALL_MOTHERS=1 -SKIPREJECTEDHITS=1 -NGENP=50 -INTEGRATEDRAW="*" -USE_GUI=0 -RUNNO=11 -INPUT_GEN_FILE="LUND, $LUNDFILE" -OUTPUT="hipo, $GEMCFILE" -N=$NEVENTS
+echo EXECUTING: SSS_GEMC_COMMAND \"$GCARD -SAVE_ALL_MOTHERS=1 -SKIPREJECTEDHITS=1 -NGENP=50 -INTEGRATEDRAW=\\\"\*\\\" -USE_GUI=0 -RUNNO=11 -INPUT_GEN_FILE=\\\"LUND, $LUNDFILE\\\" -OUTPUT=\\\"hipo, $GEMCFILE\\\" -N=$NEVENTS\"
+SSS_GEMC_COMMAND "$GCARD -SAVE_ALL_MOTHERS=1 -SKIPREJECTEDHITS=1 -NGENP=50 -INTEGRATEDRAW=\"*\" -USE_GUI=0 -RUNNO=11 -INPUT_GEN_FILE=\"LUND, $LUNDFILE\" -OUTPUT=\"hipo, $GEMCFILE\" -N=$NEVENTS"
 export GEMC_TASK_STATUS=$?
 check_task_status "gemc" $GEMCFILE $GEMC_TASK_STATUS 2
 
@@ -74,7 +75,8 @@ check_task_status "gemc" $GEMCFILE $GEMC_TASK_STATUS 2
 export OUTDIR_REC="${OUTDIR}/cooked"
 mkdir -p $OUTDIR_REC
 export RECFILE=$OUTDIR_REC/$BASENAME.hipo
-recon-util -i $GEMCFILE -o $RECFILE -n $NEVENTS -y $YAML
+echo EXECUTING: SSS_RECON_UTIL_COMMAND \"-i $GEMCFILE -o $RECFILE -n $NEVENTS -y $YAML\"
+SSS_RECON_UTIL_COMMAND "-i $GEMCFILE -o $RECFILE -n $NEVENTS -y $YAML"
 export REC_TASK_STATUS=$?
 check_task_status "recon-util" $RECFILE $REC_TASK_STATUS 3
 
@@ -83,7 +85,7 @@ export OUTDIR_DST="${OUTDIR}/dst"
 mkdir -p $OUTDIR_DST
 export DSTFILE=$OUTDIR_DST/$BASENAME.hipo
 export FILTER_BANKS='RUN::*,RAW::epics,RAW::scaler,HEL::flip,HEL::online,REC::*,RECFT::*,MC::RecMatch,MC::GenMatch,MC::Particle,MC::User,MC::Header,MC::Lund,MC::Event'
-hipo-utils -filter -b $FILTER_BANKS -merge -o $DSTFILE $RECFILE
+$SSS_HIPO_UTILS_COMMAND "-filter -b \"$FILTER_BANKS\" -merge -o $DSTFILE $RECFILE"
 export DST_TASK_STATUS=$?
 check_task_status "hipo-utils -filter" $DSTFILE $DST_TASK_STATUS 4
 
