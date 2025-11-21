@@ -8,7 +8,7 @@ setenv SSS_NEVENTS 10000000 # Number of events in each file #NOTE: CHANGE AS NEE
 setenv SSS_NMAX 10000 # Maximum number of events allowed in each output lund file
 
 # Set beam energies and target lund pids for CLAS12-Analysis #NOTE: CHANGE AS NEEDED
-setenv SSS_BEAM_ENERGY_RGA 12.0 #NOTE: CHANGE AS NEEDED.
+setenv SSS_BEAM_ENERGY_RGA 10.6 #NOTE: CHANGE AS NEEDED.
 setenv SSS_TPID_RGA 2212 #NOTE: CHANGE AS NEEDED.
 
 # Set variables for clas12-config location
