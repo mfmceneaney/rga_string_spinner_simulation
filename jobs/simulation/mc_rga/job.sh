@@ -54,7 +54,7 @@ export OUTDIR_LUND="${OUTDIR}/lund"
 mkdir -p $OUTDIR_LUND
 cd $OUTDIR_LUND
 export LUNDFILE=$OUTDIR_LUND/${BASENAME}.lund
-export ROOT_COMMAND="${ROOT_SCRIPT}(\"${INFILE}\",\"${TREE}\",\"${LUNDFILE}\", \
+export ROOT_COMMAND="${ROOT_SCRIPT}(\\\"${INFILE}\\\",\\\"${TREE}\\\",\\\"${LUNDFILE}\\\", \
 $MCINDEX, $NEVENTS, \
 $nTargetNucleons, $nTargetProtons, $targetPol, $beamPol, $beamPid, $beamEnergy, $targetPid, $processId)"
 echo EXECUTING: "SSS_SAGA_COMMAND \"root -l -b -q \\\"$ROOT_COMMAND\\\"\""
