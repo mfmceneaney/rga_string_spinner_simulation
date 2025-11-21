@@ -57,6 +57,7 @@ export LUNDFILE=$OUTDIR_LUND/${BASENAME}.lund
 export ROOT_COMMAND="${ROOT_SCRIPT}(\"${INFILE}\",\"${TREE}\",\"${LUNDFILE}\", \
 $MCINDEX, $NEVENTS, \
 $nTargetNucleons, $nTargetProtons, $targetPol, $beamPol, $beamPid, $beamEnergy, $targetPid, $processId)"
+echo EXECUTING: "SSS_SAGA_COMMAND \"root -l -b -q \\\"$ROOT_COMMAND\\\"\""
 SSS_SAGA_COMMAND "root -l -b -q \"$ROOT_COMMAND\""
 export LUND_TASK_STATUS=$?
 cd - #NOTE: cd back to wherever you were before
