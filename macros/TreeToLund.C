@@ -643,7 +643,7 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
             eventCounter++;
 
             // Check if minimum event number has been reached
-            if (eventCounter > (batch_idx-1)*batch_size) {
+            if (currentEvent > (batch_idx-1)*batch_size) {
 
                 // Write previous event
                 writeLundEvent(
@@ -671,8 +671,13 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
         // Set event number
         currentEvent = iEvent;
 
+        // Break if maximum number of events for this batch_idx has been reached
+        if (currentEvent >= batch_idx*batch_size) {
+            break;
+        }
+
         // Check if minimum index has been reached
-        if (eventCounter >= (batch_idx-1)*batch_size) {
+        if (currentEvent >= (batch_idx-1)*batch_size) {
 
             // Skip initial LUND string entry
             if (pcounter==0 && pid!=beamPid) {
@@ -682,13 +687,6 @@ void TreeToLund(const char* filename = "/Users/mfm45/Downloads/Tree-ep-at-JLAB12
 
             // Store particle data by particle counter [0:nParticles-1]
             particleMap[pcounter++] = std::make_tuple(status, pid, mother, daughter, px, py, pz, E);
-
-        // Break if maximum number of events for this batch_idx has been reached   
-        }
-        
-        if (eventCounter >= batch_idx*batch_size) {
-
-            break;
         }
     }
 
