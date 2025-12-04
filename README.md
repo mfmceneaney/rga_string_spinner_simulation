@@ -5,6 +5,7 @@ This is a storage repository for macros and scripts used to create to simulate a
 # Prerequisites
 * Assumedly, you are working on ifarm and can use slurm to submit jobs
 * [clas12-config](https://github.com/JeffersonLab/clas12-config.git) (`git clone` this and set the path manually in `env.txt`)
+* **Make sure you set the torus field to -1 in the gcard!**
 * [`gemc`](https://github.com/gemc)
 * [`clas12 container forge analysis`](https://pages.jlab.org/hallb/clas12/container-forge/)
 * [`clas12-Analysis`](https://github.com/mfmceneaney/CLAS12-Analysis.git)
