@@ -4,26 +4,74 @@ This is a storage repository for macros and scripts used to create to simulate a
 
 # Prerequisites
 * Assumedly, you are working on ifarm and can use slurm to submit jobs
-* [gemc](https://gemc.jlab.org/gemc/html/index.html) (use `module load gemc` on ifarm)
-* [coatjava](https://github.com/JeffersonLab/coatjava) (use `module load coatjava` on ifarm)
-* [clas12-config](https://github.com/JeffersonLab/clas12-config.git) (`git clone` this and set the path manually in the environment script)
-* [CLAS12-Analysis](https://github.com/mfmceneaney/CLAS12-Analysis.git)
+* [clas12-config](https://github.com/JeffersonLab/clas12-config.git) (`git clone` this and set the path manually in `env.txt`)
+* **Make sure you set the torus field to -1 in the gcard!**
+* [`gemc`](https://github.com/gemc)
+* [`clas12 container forge analysis`](https://pages.jlab.org/hallb/clas12/container-forge/)
+* [`clas12-Analysis`](https://github.com/mfmceneaney/CLAS12-Analysis.git)
+* [`saga`](https://github.com/mfmceneaney/saga.git)
+
+From the prerequisites above you should check for system installations of the following on ifarm:
+* `root`
+* `gemc`
+* `recon-util` (from clas12 container forge)
+* `hipo-utils` (from clas12 container forge)
+
+Otherwise install images with either singularity or apptainer.  Note that you may need to set
+the cache and tmp directories for these to some directory capable of housing large files.
+For example, on the Duke Compute cluster add the following to your startup script.
+```bash
+# Set container cache and tmp directory to cwork
+export CWORK_DIR=/cwork/$USER/
+export APPTAINER_CACHEDIR=$CWORK_DIR
+export APPTAINER_TMPDIR=$CWORK_DIR
+export SINGULARITY_CACHEDIR=$CWORK_DIR
+export SINGULARITY_TMPDIR=$CWORK_DIR
+```
+
+Here we will use apptainer to install the necessary images.  You will need to set the path to each image in `env.txt`.
+
+Install `gemc`:
+```bash
+apptainer pull gemc_dev-almalinux94/ docker://jeffersonlab/gemc:dev-almalinux94
+```
+
+Install `clas12 container forge analysis`:
+```bash
+apptainer pull docker://codecr.jlab.org/hallb/clas12/container-forge/analysis:latest
+```
+
+Install `clas12-analysis`:
+```bash
+apptainer pull clas12-analysis.sif oras://ghcr.io/mfmceneaney/clas12-analysis:latest
+```
+
+Install `saga` (or another container that will run CERN `root`):
+```bash
+apptainer pull saga.sif oras://ghcr.io/mfmceneaney/saga:latest
+```
 
 # Installation
 
 Begin by cloning the repository:
 ```bash
-git clone https://github.com/mfmceneaney/string_spinner_simulation.git
+git clone https://github.com/mfmceneaney/rga_string_spinner_simulation.git
 ```
 
-Set all the paths in the environment script&mdash;[bin/env.sh](bin/env.sh) or [bin/env.csh](bin/env.csh)&mdash;to the appropriate values for you.
-In particular, you will need to manually set these variables in the environment script depending on your local installation paths:
-`SSS_HOME`, `SSS_VOL_DIR`, `SSS_JOBS_SIM_MC_RGA`, `SSS_JOBS_C12A_MC_RGA`.
+Update the paths and commands used in the environment script&mdash;[bin/env.sh](bin/env.sh) or [bin/env.csh](bin/env.csh)&mdash;by creating a file `env.txt` in the root of this repository.
+In this file you will need to manually set variables used in the environment script depending on your local installation paths and the paths for existing data and MC samples you wish to use:
+`SSS_VOL_DIR`, `SSS_HOME`, `SSS_*_IMG`, etc.
 
-After configuring your environment script, add the following to your (bash) startup script:
+After configuring your environment file, source the environment and run the setup script.
 ```bash
-# Set up RGA String Spinner Simulation https://github.com/mfmceneaney/string_spinner_simulation.git
-pushd /path/to/rga_string_spinner_simulation>> /dev/null
+source bin/env.sh
+./bin/setup.sh
+```
+
+Then add the following to your (bash) startup script:
+```bash
+# Set up rga_string_spinner_simulation projections https://github.com/mfmceneaney/rga_string_spinner_simulation.git
+pushd /path/to/rga_string_spinner_simulation >> /dev/null
 source bin/env.sh
 popd >> /dev/null
 ```

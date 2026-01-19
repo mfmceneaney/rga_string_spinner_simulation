@@ -22,7 +22,8 @@ cp submit.sh submit$idx.sh
 
 # Replace variables
 sed -i "s;INFILE=\"file.root\";INFILE=$file;g" job$idx.sh
-sed -i "s;MCINDEX=0;MCINDEX=$idx;g" job$idx.sh
+sed -i "s;MCINDEX=0;MCINDEX=$i;g" job$idx.sh
+sed -i "s;PREFIX=\"out_\";PREFIX=\"out_${j}_\";g" job$idx.sh
 sed -i "s;job.sh;job$idx.sh;g" submit$idx.sh
 
 # Submit job
